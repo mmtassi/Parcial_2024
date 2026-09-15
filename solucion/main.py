@@ -12,11 +12,15 @@ class Empleado(ABC):
     def calcular_sueldo(self):
         pass
 
+
 class Contratados(Empleado):
     def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, horas_trabajadas):
         super().__init__(nombre, apellido, dni , relacion_dependencia, sueldo)
         self.horas_minimas_dia = 8
         self.horas_trabajadas = horas_trabajadas
+
+    def horas_trabajadas_dia(self):
+        return self.horas_trabajadas / 20  # Suponiendo 20 días hábiles en un mes
 
     def calcular_sueldo(self):
         return self.sueldo * self.horas_trabajadas
