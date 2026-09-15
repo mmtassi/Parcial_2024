@@ -1,0 +1,15 @@
+empleados:  nombre
+            apellido
+            dni
+            relacion de dependencia
+            sueldo
+
+contratados: cantidad de horas minima por dia: 8
+             costo por hora
+             dias cumplidos
+
+empleados de planta: horas trabajadas por dia
+                     horas mensuales: 200
+                     nivel
+                     
+                     
