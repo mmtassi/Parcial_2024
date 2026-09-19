@@ -14,21 +14,22 @@ class Empleado(ABC):
 
 
 class Contratados(Empleado):
-    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, horas_trabajadas):
+    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, horas_trabajadas, valor_hora):
         super().__init__(nombre, apellido, dni , relacion_dependencia, sueldo)
         self.horas_minimas_dia = 8
         self.horas_trabajadas = horas_trabajadas
+        self.valor_hora = valor_hora
 
     def horas_trabajadas_dia(self):
-        return self.horas_trabajadas / 20  # Suponiendo 20 días hábiles en un mes
+        return self.horas_trabajadas
 
     def calcular_sueldo(self):
-        return self.sueldo * self.horas_trabajadas
+        return self.valor_hora * self.horas_trabajadas
 
 class EmpleadoPlanta(Empleado):
-    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, antiguedad):
+    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, nivel):
         super().__init__(nombre, apellido, dni , relacion_dependencia, sueldo)
-        self.antiguedad = antiguedad
+        self.nivel = nivel
 
     def calcular_sueldo(self):
-        return self.sueldo + (self.antiguedad * 100)  # Sueldo base más un bono por antigüedad
+        return self.sueldo
