@@ -1,35 +1,72 @@
 from abc import ABC, abstractmethod
 
-class Empleado(ABC):
-    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo):
-        self.nombre = nombre
-        self.apellido = apellido
-        self.dni = dni
-        self.relacion_dependencia = relacion_dependencia
-        self.sueldo = sueldo
+class Empleado:
+    def __init__(self, nombre, apellido, dni, dependencia):
+        self._nombre = nombre
+        self._apellido = apellido
+        self._dni = dni
+        self._dependencia = dependencia
+        self._horas_trabajadas = []
 
+    def agregar_horas(self, horas):
+        if horas < 0:
+            raise ValueError("Las horas trabajadas no pueden ser negativas.")
+        self._horas_trabajadas.append(horas)
+
+    def sueldo(self):
+        return self._dependencia.calcular_sueldo(self._horas_trabajadas)
+
+class RelacionDependencia(ABC):
     @abstractmethod
-    def calcular_sueldo(self):
+    def calcular_sueldo(self, horas_trabajadas):
         pass
 
+class Contratado(RelacionDependencia):
+    def __init__(self, horas_minimas, precio_hora):
+        self._horas_minimas = horas_minimas
+        self._precio_hora = precio_hora
 
-class Contratados(Empleado):
-    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, horas_trabajadas, valor_hora):
-        super().__init__(nombre, apellido, dni , relacion_dependencia, sueldo)
-        self.horas_minimas_dia = 8
-        self.horas_trabajadas = horas_trabajadas
-        self.valor_hora = valor_hora
+    def calcular_sueldo(self, horas_trabajadas):
+        sueldo = 0
+        for horas in horas_trabajadas:
+            if horas >= self._horas_minimas:
+                sueldo += self._horas_minimas * self._precio_hora  # Sueldo por horas mínimas
 
-    def horas_trabajadas_dia(self):
-        return self.horas_trabajadas
+        return sueldo
 
-    def calcular_sueldo(self):
-        return self.valor_hora * self.horas_trabajadas
+class Planta(RelacionDependencia):
+    def __init__(self, sueldo_base, nivel):
+        self._sueldo_base = sueldo_base
+        self._nivel = nivel
 
-class EmpleadoPlanta(Empleado):
-    def __init__(self, nombre, apellido, dni , relacion_dependencia, sueldo, nivel):
-        super().__init__(nombre, apellido, dni , relacion_dependencia, sueldo)
-        self.nivel = nivel
+    def calcular_sueldo(self, horas_trabajadas, nivel):
+        return self.
 
-    def calcular_sueldo(self):
-        return self.sueldo
+class Nivel(ABC):
+    @abstractmethod
+    def calcular_sueldo(self, horas_trabajadas):
+        pass
+
+class Operativo(Nivel):
+
+    def calcular_sueldo(self, horas_trabajadas):
+        sueldo = 0
+        if sum(horas_trabajadas) >= 200:
+            sueldo = 200 * self._sueldo_base * 1.25 + (sum(horas_trabajadas) - 200) * self._sueldo_base * 1.25 * 2
+        return sueldo
+
+class Tecnico(Nivel):
+
+    def calcular_sueldo(self, horas_trabajadas):
+        sueldo = 0
+        if sum(horas_trabajadas) >= 200:
+            sueldo = 200 * self._sueldo_base * 1.50 + (sum(horas_trabajadas) - 200) * self._sueldo_base * 1.50 * 2
+        return sueldo
+
+class Especialista(Nivel):
+
+    def calcular_sueldo(self, horas_trabajadas):
+        sueldo = 0
+        if sum(horas_trabajadas) >= 200:
+            sueldo = 200 * self._sueldo_base * 1.75 + (sum(horas_trabajadas) - 200) * self._sueldo_base * 1.75 * 2
+        return sueldo
