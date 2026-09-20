@@ -112,10 +112,6 @@ class Planta(RelacionDependencia):
         return Contratado(horas_minimas, precio_hora)
 
 class Nivel(ABC):
-    def __init__(self, sueldo_base):
-        if sueldo_base < 0:
-            raise ValueError("El sueldo base no puede ser negativo.")
-        self._sueldo_base = sueldo_base
 
     @abstractmethod
     def valor_hora(self):
@@ -124,14 +120,14 @@ class Nivel(ABC):
 class Operativo(Nivel):
 
     def valor_hora(self):
-        return self._sueldo_base * 1.25
+        return 100
 
 class Tecnico(Nivel):
 
     def valor_hora(self):
-        return self._sueldo_base * 1.50
+        return 150
 
 class Especialista(Nivel):
 
     def valor_hora(self):
-        return self._sueldo_base * 1.75
+        return 200
