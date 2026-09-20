@@ -45,15 +45,32 @@ class Empleado:
         self._dependencia = self._dependencia.precarizar(horas_minimas, precio_hora)
 
     def optimizar(self, horas_minimas, precio_hora):
-        self._dependencia = self._dependencia.optimizar_sueldos(horas_minimas, precio_hora)
+        self._dependencia = self._dependencia.optimizar(horas_minimas, precio_hora)
 
 class RelacionDependencia(ABC):
+
     @abstractmethod
     def calcular_sueldo(self, horas_trabajadas):
         pass
 
+    @abstractmethod
+    def efectivizar(self, nivel):
+        pass
+
+    @abstractmethod
+    def precarizar(self, horas_minimas, precio_hora):
+        pass
+
+    @abstractmethod
+    def optimizar(self, horas_minimas, precio_hora):
+        pass
+
 class Contratado(RelacionDependencia):
     def __init__(self, horas_minimas, precio_hora):
+        if horas_minimas < 0:
+            raise ValueError("Las horas mínimas no pueden ser negativas.")
+        if precio_hora < 0:
+            raise ValueError("El precio por hora no puede ser negativo.")
         self._horas_minimas = horas_minimas
         self._precio_hora = precio_hora
 
@@ -85,19 +102,19 @@ class Planta(RelacionDependencia):
             return self._nivel.valor_hora() * 200 + self._nivel.valor_hora() * horas_extras * 2
         return 0
 
-    class Planta(RelacionDependencia):
+    def efectivizar(self, nivel):
+        raise ValueError("El empleado ya es de planta.")
 
-        def efectivizar(self, nivel):
-            raise ValueError("El empleado ya es de planta.")
+    def precarizar(self, horas_minimas, precio_hora):
+        return Contratado(horas_minimas, precio_hora)
 
-        def precarizar(self, horas_minimas, precio_hora):
-            return Contratado(horas_minimas, precio_hora)
-
-        def optimizar(self, horas_minimas, precio_hora):
-            return Contratado(horas_minimas, precio_hora)
+    def optimizar(self, horas_minimas, precio_hora):
+        return Contratado(horas_minimas, precio_hora)
 
 class Nivel(ABC):
     def __init__(self, sueldo_base):
+        if sueldo_base < 0:
+            raise ValueError("El sueldo base no puede ser negativo.")
         self._sueldo_base = sueldo_base
 
     @abstractmethod
