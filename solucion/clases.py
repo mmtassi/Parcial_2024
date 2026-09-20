@@ -8,10 +8,10 @@ class Empresa:
         self._empleados.append(empleado)
 
     def total_sueldos_a_pagar(self):
-        sueldos = 0
+        sueldo = 0
         for empleado in self._empleados:
-            sueldos += empleado.sueldo()
-        return sueldos
+            sueldo += empleado.sueldo()
+        return sueldo
 
     def optimizar_sueldos(self, horas_minimas, precio_hora):
         for empleado in self._empleados:

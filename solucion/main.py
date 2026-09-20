@@ -30,3 +30,6 @@ print(matias.sueldo())
 
 for empleado in empresa._empleados:
     print(f"{empleado._nombre} {empleado._apellido} - Sueldo: {empleado.sueldo()}")
+
+print(empresa.total_sueldos_a_pagar())
+print(empresa.mejor_sueldo())
