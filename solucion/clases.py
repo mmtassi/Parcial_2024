@@ -4,6 +4,10 @@ class Empresa:
     def __init__(self):
         self._empleados = []
 
+    @property
+    def empleados(self):
+        return tuple(self._empleados)
+
     def agregar_empleado(self, empleado):
         self._empleados.append(empleado)
 
@@ -29,6 +33,18 @@ class Empleado:
         self._dni = dni
         self._dependencia = dependencia
         self._horas_trabajadas = []
+
+    @property
+    def nombre(self):
+        return self._nombre
+
+    @property
+    def apellido(self):
+        return self._apellido
+
+    @property
+    def dni(self):
+        return self._dni
 
     def agregar_horas(self, horas):
         if horas < 0:
