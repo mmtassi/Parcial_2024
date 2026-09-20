@@ -1,5 +1,27 @@
 from abc import ABC, abstractmethod
 
+class Empresa:
+    def __init__(self):
+        self._empleados = []
+
+    def agregar_empleado(self, empleado):
+        self._empleados.append(empleado)
+
+    def total_sueldos_a_pagar(self):
+        sueldos = 0
+        for empleado in self._empleados:
+            sueldos += empleado.sueldo()
+        return sueldos
+
+    def optimizar_sueldos(self, horas_minimas, precio_hora):
+        for empleado in self._empleados:
+            empleado.optimizar(horas_minimas, precio_hora)
+
+    def mejor_sueldo(self):
+        if not self._empleados:
+            return 0
+        return max(empleado.sueldo() for empleado in self._empleados)
+
 class Empleado:
     def __init__(self, nombre, apellido, dni, dependencia):
         self._nombre = nombre
@@ -15,6 +37,15 @@ class Empleado:
 
     def sueldo(self):
         return self._dependencia.calcular_sueldo(self._horas_trabajadas)
+
+    def efectivizar(self, nivel):
+        self._dependencia = self._dependencia.efectivizar(nivel)
+
+    def precarizar(self, horas_minimas, precio_hora):
+        self._dependencia = self._dependencia.precarizar(horas_minimas, precio_hora)
+
+    def optimizar(self, horas_minimas, precio_hora):
+        self._dependencia = self._dependencia.optimizar_sueldos(horas_minimas, precio_hora)
 
 class RelacionDependencia(ABC):
     @abstractmethod
@@ -34,6 +65,15 @@ class Contratado(RelacionDependencia):
 
         return sueldo
 
+    def efectivizar(self, nivel):
+        return Planta(nivel)
+
+    def precarizar(self, horas_minimas, precio_hora):
+        raise ValueError("El empleado ya es contratado.")
+
+    def optimizar(self, horas_minimas, precio_hora):
+        return self
+
 class Planta(RelacionDependencia):
     def __init__(self, nivel):
         self._nivel = nivel
@@ -44,6 +84,18 @@ class Planta(RelacionDependencia):
         if total_horas >= 200:
             return self._nivel.valor_hora() * 200 + self._nivel.valor_hora() * horas_extras * 2
         return 0
+
+    class Planta(RelacionDependencia):
+
+        def efectivizar(self, nivel):
+            raise ValueError("El empleado ya es de planta.")
+
+        def precarizar(self, horas_minimas, precio_hora):
+            return Contratado(horas_minimas, precio_hora)
+
+        def optimizar(self, horas_minimas, precio_hora):
+            return Contratado(horas_minimas, precio_hora)
+
 class Nivel(ABC):
     def __init__(self, sueldo_base):
         self._sueldo_base = sueldo_base
