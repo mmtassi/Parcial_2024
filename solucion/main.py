@@ -35,38 +35,34 @@ class Contratado(RelacionDependencia):
         return sueldo
 
 class Planta(RelacionDependencia):
-    def __init__(self, sueldo_base, nivel):
-        self._sueldo_base = sueldo_base
+    def __init__(self, nivel):
         self._nivel = nivel
 
-    def calcular_sueldo(self, horas_trabajadas, nivel):
-        return self.
-
-class Nivel(ABC):
-    @abstractmethod
     def calcular_sueldo(self, horas_trabajadas):
+        total_horas = sum(horas_trabajadas)
+        horas_extras = max(0, total_horas - 200)
+        if total_horas >= 200:
+            return self._nivel.valor_hora() * 200 + self._nivel.valor_hora() * horas_extras * 2
+        return 0
+class Nivel(ABC):
+    def __init__(self, sueldo_base):
+        self._sueldo_base = sueldo_base
+
+    @abstractmethod
+    def valor_hora(self):
         pass
 
 class Operativo(Nivel):
 
-    def calcular_sueldo(self, horas_trabajadas):
-        sueldo = 0
-        if sum(horas_trabajadas) >= 200:
-            sueldo = 200 * self._sueldo_base * 1.25 + (sum(horas_trabajadas) - 200) * self._sueldo_base * 1.25 * 2
-        return sueldo
+    def valor_hora(self):
+        return self._sueldo_base * 1.25
 
 class Tecnico(Nivel):
 
-    def calcular_sueldo(self, horas_trabajadas):
-        sueldo = 0
-        if sum(horas_trabajadas) >= 200:
-            sueldo = 200 * self._sueldo_base * 1.50 + (sum(horas_trabajadas) - 200) * self._sueldo_base * 1.50 * 2
-        return sueldo
+    def valor_hora(self):
+        return self._sueldo_base * 1.50
 
 class Especialista(Nivel):
 
-    def calcular_sueldo(self, horas_trabajadas):
-        sueldo = 0
-        if sum(horas_trabajadas) >= 200:
-            sueldo = 200 * self._sueldo_base * 1.75 + (sum(horas_trabajadas) - 200) * self._sueldo_base * 1.75 * 2
-        return sueldo
+    def valor_hora(self):
+        return self._sueldo_base * 1.75
